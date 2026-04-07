@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: splitstudy
+    env: docker
+    plan: free
+    dockerCommand: "java -jar app.jar"
+    healthCheckPath: /

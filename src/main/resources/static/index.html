@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpiltStudy | Dark Studio Learning Workspace</title>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Landing Screen -->
+    <div id="landing-screen" class="screen">
+        <div class="bg-selector">
+            <button id="bg-toggle-btn" title="Choose Background">
+                <i data-lucide="image" style="width: 20px;"></i>
+            </button>
+            <div id="bg-options" class="bg-options hidden">
+                <div class="bg-option" data-bg="none">Default</div>
+                <div class="bg-option" data-bg="bg1.png">Floral 1</div>
+                <div class="bg-option" data-bg="bg2.png">Floral 2</div>
+                <div class="bg-option" data-bg="bg3.png">Floral 3</div>
+            </div>
+        </div>
+        
+        <div class="hero">
+            <div class="logo-badge">SS</div>
+            <h1>SpiltStudy</h1>
+            <p>High-Fidelity Learning. Mastered.</p>
+            
+            <div class="search-container">
+                <div class="theme-toggle" id="theme-toggle-landing" style="position: absolute; top: -60px; right: 0; cursor: pointer; opacity: 0.6;">
+                    <i data-lucide="sun" class="sun-icon hidden"></i>
+                    <i data-lucide="moon" class="moon-icon"></i>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="topic-input" placeholder="What are we learning today?">
+                    <button id="study-btn">Start Session</button>
+                </div>
+                <div class="topic-tags">
+                    <span class="tag-chip">Quantum Physics</span>
+                    <span class="tag-chip">Neural Networks</span>
+                    <span class="tag-chip">Microeconomics</span>
+                    <span class="tag-chip">Modern Art</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workspace Screen -->
+    <div id="workspace-screen" class="screen hidden">
+        <nav class="top-nav">
+            <div class="nav-left">
+                <div class="logo-badge" style="margin: 0; width: 32px; height: 32px; font-size: 0.8rem; border-radius: 8px;">SS</div>
+            </div>
+            
+            <div class="nav-center">
+                <i data-lucide="search" style="width: 14px; color: var(--text-secondary);"></i>
+                <input type="text" id="update-topic-input" placeholder="Change topic...">
+                <button id="update-btn">Update</button>
+            </div>
+            
+            <div class="nav-right" style="display: flex; align-items: center; gap: 20px;">
+                <div class="theme-toggle" id="theme-toggle-workspace" style="cursor: pointer; display: flex; align-items: center;">
+                    <i data-lucide="sun" class="sun-icon hidden" style="width: 18px;"></i>
+                    <i data-lucide="moon" class="moon-icon" style="width: 18px;"></i>
+                </div>
+                <button id="back-btn" class="action-btn" style="background: transparent; color: var(--text-primary); border: none; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                    <i data-lucide="arrow-left" style="width: 16px;"></i> Home
+                </button>
+            </div>
+        </nav>
+        
+        <div class="split-container">
+            <!-- Left Pane: Academic Notes -->
+            <div class="pane left-pane">
+                <div class="pane-header">
+                    <div class="pane-title">
+                        <span class="status-dot dot-teal"></span>
+                        Academic Studio
+                    </div>
+                    <div class="pane-actions">
+                        <i data-lucide="copy" class="action-icon"></i>
+                        <i data-lucide="bookmark" class="action-icon"></i>
+                        <i data-lucide="maximize-2" class="action-icon"></i>
+                    </div>
+                </div>
+                <!-- Content gets staggered in -->
+                <div id="notes-content" class="content-area academic-content">
+                    <!-- Sample Content for Visual Setup -->
+                </div>
+            </div>
+
+            <!-- Resizer Handle -->
+            <div id="resizer" class="resizer"></div>
+
+            <!-- Synced Pill -->
+            <div id="sync-pill" class="sync-pill hidden">
+                <span class="pulse-dot"></span>
+                SYNCED
+            </div>
+
+            <!-- Right Pane: Video Hub -->
+            <div class="pane right-pane">
+                <div class="pane-header">
+                    <div class="pane-title">
+                        <span class="status-dot dot-blue"></span>
+                        Video Source
+                    </div>
+                    <div class="pane-actions">
+                        <i data-lucide="share" class="action-icon"></i>
+                        <i data-lucide="settings" class="action-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <iframe id="video-frame" 
+                            src="" 
+                            title="YouTube video player"
+                            allow="autoplay; encrypted-media; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                        <!-- Gradient Progress Bar Mockup -->
+                        <div class="video-overlay-bottom"></div>
+                        <button id="more-videos-btn" class="more-videos-btn" style="display: none;">
+                            <i data-lucide="list-video" style="width: 16px;"></i> More Videos
+                        </button>
+                    </div>
+
+                    <div id="suggestions-pane" class="suggestions-pane">
+                        <button id="close-suggestions-btn" title="Close Suggestions" class="close-drawer-btn">
+                            <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+                        </button>
+                        <div class="suggestions-header" style="margin-bottom: 16px;">
+                            <div class="pane-title" style="margin-bottom: 0; font-size: 0.75rem;">Related Perspectives</div>
+                        </div>
+                        <div id="suggestions-list">
+                            <!-- Suggestion items with thumbnails -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
