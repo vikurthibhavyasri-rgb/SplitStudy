@@ -19,9 +19,9 @@ public class StudyController {
     @Autowired
     private RestTemplate restTemplate;
     
-    private final String API_KEY = "AIzaSyCxCxcMnB3g7KN1h_DOc7T5N9k4fCqLrTU";
-    private final String CX_ID = "86274116fd8654208";
-    private final String VIDEO_CX_ID = "c08ceb4557a2b4032"; 
+    private final String API_KEY = "API_KEY";
+    private final String CX_ID = "API KEY";
+    private final String VIDEO_CX_ID = "API KEY"; 
 
     @GetMapping("/summarize")
     public Map<String, Object> getStudyMaterials(@RequestParam String topic) {
