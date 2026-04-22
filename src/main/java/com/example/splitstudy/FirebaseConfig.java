@@ -10,10 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -25,20 +27,27 @@ public class FirebaseConfig {
     @Bean
     public Firestore getFirestore() throws IOException {
         if (FirebaseApp.getApps().isEmpty()) {
-            String fileName = "firebase-service-account.json.json";
             InputStream serviceAccount = null;
 
-            // Try to find the file in the current directory or /app directory
-            if (Files.exists(Paths.get(fileName))) {
-                logger.info("Found Firebase config at: {}", new File(fileName).getAbsolutePath());
-                serviceAccount = new FileInputStream(fileName);
-            } else if (Files.exists(Paths.get("/app/" + fileName))) {
-                logger.info("Found Firebase config at: /app/{}", fileName);
-                serviceAccount = new FileInputStream("/app/" + fileName);
+            // Method 1: Try Environment Variable (Best for Cloud)
+            String jsonConfig = System.getenv("FIREBASE_CONFIG_JSON");
+            if (jsonConfig != null && !jsonConfig.trim().isEmpty()) {
+                logger.info("Initializing Firebase using FIREBASE_CONFIG_JSON environment variable.");
+                serviceAccount = new ByteArrayInputStream(jsonConfig.getBytes(StandardCharsets.UTF_8));
             } else {
-                String error = "CRITICAL: Firebase service account file '" + fileName + "' NOT FOUND in /app/ or root directory.";
-                logger.error(error);
-                throw new IOException(error);
+                // Method 2: Try Local File (Best for Local Development)
+                String fileName = "firebase-service-account.json.json";
+                if (Files.exists(Paths.get(fileName))) {
+                    logger.info("Found Firebase config at: {}", new File(fileName).getAbsolutePath());
+                    serviceAccount = new FileInputStream(fileName);
+                } else if (Files.exists(Paths.get("/app/" + fileName))) {
+                    logger.info("Found Firebase config at: /app/{}", fileName);
+                    serviceAccount = new FileInputStream("/app/" + fileName);
+                } else {
+                    String error = "CRITICAL: Firebase credentials not found! Please provide FIREBASE_CONFIG_JSON env var or " + fileName + " file.";
+                    logger.error(error);
+                    throw new IOException(error);
+                }
             }
 
             try {
