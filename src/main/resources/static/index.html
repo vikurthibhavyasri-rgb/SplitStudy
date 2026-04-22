@@ -3,152 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpiltStudy | Dark Studio Learning Workspace</title>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>SpiltStudy | Advanced Learning Studio</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Styles -->
     <link rel="stylesheet" href="style.css">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+    
+    <!-- AUTH SCREEN -->
+    <div id="auth-screen" class="landing-container hidden">
+        <div class="hero-content" style="max-width: 440px;">
+            <div class="badge">SECURE ACCESS</div>
+            <h1 class="hero-title" style="font-size: 3rem; margin-bottom: 0.5rem;">Split-<span class="gradient-text">Study</span></h1>
+            <p id="auth-subtitle" style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 2.5rem;">Welcome Back</p>
+            
+            <div style="background: var(--surface); padding: 2.5rem; border-radius: 28px; border: 1px solid var(--border); box-shadow: var(--shadow-lg); display: flex; flex-direction: column; gap: 1.5rem; backdrop-filter: var(--glass-blur);">
+                <div style="position: relative;">
+                    <i data-lucide="user" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: 18px; color: var(--text-secondary);"></i>
+                    <input type="text" id="username" placeholder="Username" style="width: 100%; padding: 1.1rem 1rem 1.1rem 3.2rem; background: var(--surface-light); border: 1px solid var(--border); border-radius: 14px; color: white; outline: none; font-size: 1rem;">
+                </div>
+                
+                <div style="position: relative;">
+                    <i data-lucide="lock" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: 18px; color: var(--text-secondary);"></i>
+                    <input type="password" id="password" placeholder="Password" style="width: 100%; padding: 1.1rem 1rem 1.1rem 3.2rem; background: var(--surface-light); border: 1px solid var(--border); border-radius: 14px; color: white; outline: none; font-size: 1rem;">
+                </div>
+                
+                <button id="auth-submit" style="width: 100%; background: var(--accent-blue); color: white; border: none; padding: 1.2rem; border-radius: 14px; font-weight: 800; cursor: pointer; font-size: 1.1rem; margin-top: 0.5rem; transition: transform 0.2s;">Continue</button>
+            </div>
+            
+            <p class="hero-description" style="font-size: 0.9rem;">
+                <span id="auth-toggle-text">Don't have an account?</span> 
+                <a href="#" id="auth-toggle-btn" style="color: var(--accent-blue); text-decoration: none; font-weight: 600;">Sign Up</a>
+            </p>
+        </div>
+    </div>
 
-    <!-- Landing Screen -->
-    <div id="landing-screen" class="screen">
-        <div class="bg-selector">
-            <button id="bg-toggle-btn" title="Choose Background">
-                <i data-lucide="image" style="width: 20px;"></i>
-            </button>
-            <div id="bg-options" class="bg-options hidden">
-                <div class="bg-option" data-bg="none">Default</div>
-                <div class="bg-option" data-bg="bg1.png">Floral 1</div>
-                <div class="bg-option" data-bg="bg2.png">Floral 2</div>
-                <div class="bg-option" data-bg="bg3.png">Floral 3</div>
+    <!-- LANDING SCREEN -->
+    <div id="landing-screen" class="landing-container">
+        <!-- Theme Controls -->
+        <div class="floating-controls">
+            <div class="control-btn" id="theme-toggle" title="Toggle Theme">
+                <i data-lucide="moon"></i>
+            </div>
+            <div class="control-btn" id="study-theme-toggle" title="Study Mode">
+                <i data-lucide="lamp"></i>
+            </div>
+            <div class="control-btn" id="open-notebook-landing" title="NoteBook">
+                <i data-lucide="book-open"></i>
+            </div>
+            <div class="control-btn" id="logout-btn" title="Logout">
+                <i data-lucide="log-out"></i>
             </div>
         </div>
-        
-        <div class="hero">
-            <div class="logo-badge">SS</div>
-            <h1>SpiltStudy</h1>
-            <p>High-Fidelity Learning. Mastered.</p>
+
+        <div class="hero-content">
+            <div class="badge">ACADEMIC STUDIO 2.0</div>
+            <h1 class="hero-title">Split-<span class="gradient-text">Study</span></h1>
+            <p class="hero-description">an Interactive learning hub</p>
             
             <div class="search-container">
-                <div class="theme-toggle" id="theme-toggle-landing" style="position: absolute; top: -60px; right: 0; cursor: pointer; opacity: 0.6;">
-                    <i data-lucide="sun" class="sun-icon hidden"></i>
-                    <i data-lucide="moon" class="moon-icon"></i>
-                </div>
-                <div class="search-box">
-                    <input type="text" id="topic-input" placeholder="What are we learning today?">
-                    <button id="study-btn">Start Session</button>
-                </div>
-                <div class="topic-tags">
-                    <span class="tag-chip">Quantum Physics</span>
-                    <span class="tag-chip">Neural Networks</span>
-                    <span class="tag-chip">Microeconomics</span>
-                    <span class="tag-chip">Modern Art</span>
-                </div>
+                <input type="text" id="topic-input" placeholder="Enter a concept (e.g. Quantum Physics)" autofocus>
+                <button id="initialize-btn">Generate <i data-lucide="sparkles"></i></button>
+            </div>
+
+            <div class="chips-container" id="search-history">
+                <span class="chip">Neural Networks</span>
+                <span class="chip">Macroeconomics</span>
+                <span class="chip">Cell Biology</span>
+                <span class="chip">React Hooks</span>
             </div>
         </div>
     </div>
 
-    <!-- Workspace Screen -->
-    <div id="workspace-screen" class="screen hidden">
-        <nav class="top-nav">
-            <div class="nav-left">
-                <div class="logo-badge" style="margin: 0; width: 32px; height: 32px; font-size: 0.8rem; border-radius: 8px;">SS</div>
+    <!-- WORKSPACE SCREEN -->
+    <div id="workspace-screen" class="workspace-container hidden">
+        <nav class="navbar">
+            <div class="nav-group">
+                <button id="back-to-landing" class="btn-icon"><i data-lucide="chevron-left"></i></button>
+                <div style="font-weight: 800; letter-spacing: -1px; font-size: 1.2rem; margin-left: 0.5rem;">SpiltStudy</div>
             </div>
             
-            <div class="nav-center">
-                <i data-lucide="search" style="width: 14px; color: var(--text-secondary);"></i>
-                <input type="text" id="update-topic-input" placeholder="Change topic...">
-                <button id="update-btn">Update</button>
-            </div>
-            
-            <div class="nav-right" style="display: flex; align-items: center; gap: 20px;">
-                <div class="theme-toggle" id="theme-toggle-workspace" style="cursor: pointer; display: flex; align-items: center;">
-                    <i data-lucide="sun" class="sun-icon hidden" style="width: 18px;"></i>
-                    <i data-lucide="moon" class="moon-icon" style="width: 18px;"></i>
+            <div class="nav-group">
+                <div class="topic-pill">
+                    <input type="text" id="update-topic-input" placeholder="Re-initialize topic...">
+                    <button id="update-btn" class="btn-icon" style="background: transparent; border: none;"><i data-lucide="refresh-cw" style="width: 16px;"></i></button>
                 </div>
-                <button id="back-btn" class="action-btn" style="background: transparent; color: var(--text-primary); border: none; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">
-                    <i data-lucide="arrow-left" style="width: 16px;"></i> Home
-                </button>
+            </div>
+
+            <div class="nav-group">
+                <button class="btn-icon"><i data-lucide="share-2"></i></button>
+                <button class="btn-icon" id="open-notebook" title="NoteBook"><i data-lucide="book-open"></i></button>
+                <button class="btn-icon" id="open-chat"><i data-lucide="message-square"></i></button>
             </div>
         </nav>
-        
-        <div class="split-container">
-            <!-- Left Pane: Academic Notes -->
-            <div class="pane left-pane">
+
+        <main class="main-layout">
+            <!-- Left: Notes -->
+            <div class="pane pane-left">
                 <div class="pane-header">
-                    <div class="pane-title">
-                        <span class="status-dot dot-teal"></span>
-                        Academic Studio
-                    </div>
-                    <div class="pane-actions">
-                        <i data-lucide="copy" class="action-icon"></i>
-                        <i data-lucide="bookmark" class="action-icon"></i>
-                        <i data-lucide="maximize-2" class="action-icon"></i>
+                    <span><i data-lucide="file-text" style="width: 14px; margin-right: 8px;"></i> Knowledge Base</span>
+                    <div class="nav-group">
+                        <i data-lucide="copy" style="width: 14px; cursor: pointer;"></i>
+                        <i data-lucide="bookmark" style="width: 14px; cursor: pointer;"></i>
                     </div>
                 </div>
-                <!-- Content gets staggered in -->
-                <div id="notes-content" class="content-area academic-content">
-                    <!-- Sample Content for Visual Setup -->
+                <div id="notes-content" class="content-body stagger">
+                    <!-- Dynamic Notes -->
                 </div>
             </div>
 
-            <!-- Resizer Handle -->
-            <div id="resizer" class="resizer"></div>
+            <!-- Resizer -->
+            <div id="layout-resizer" class="resizer-bar"></div>
 
-            <!-- Synced Pill -->
-            <div id="sync-pill" class="sync-pill hidden">
-                <span class="pulse-dot"></span>
-                SYNCED
-            </div>
-
-            <!-- Right Pane: Video Hub -->
-            <div class="pane right-pane">
+            <!-- Right: Media -->
+            <div class="pane pane-right">
                 <div class="pane-header">
-                    <div class="pane-title">
-                        <span class="status-dot dot-blue"></span>
-                        Video Source
+                    <span><i data-lucide="play" style="width: 14px; margin-right: 8px;"></i> Media Source</span>
+                </div>
+                <div class="video-hub">
+                    <div class="player-wrapper">
+                        <iframe id="main-video" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                     </div>
-                    <div class="pane-actions">
-                        <i data-lucide="share" class="action-icon"></i>
-                        <i data-lucide="settings" class="action-icon"></i>
+                    
+                    <div class="scroll-area">
+                        <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-secondary); margin-bottom: 1rem; letter-spacing: 0.1em;">EXPANDED PERSPECTIVES</div>
+                        <div id="video-suggestions" class="stagger">
+                            <!-- Dynamic Videos -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- CHATBOT OVERLAY -->
+    <div id="chat-widget" class="hidden" style="position: fixed; bottom: 2rem; right: 2rem; width: 350px; height: 500px; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-lg); z-index: 2000; display: flex; flex-direction: column; overflow: hidden; backdrop-filter: var(--glass-blur);">
+        <div class="pane-header" style="background: var(--accent-blue); color: white; border: none;">
+            <span>AI ASSISTANT</span>
+            <button id="close-chat" class="btn-icon" style="background: transparent; border: none; width: auto; height: auto; padding: 5px;"><i data-lucide="x"></i></button>
+        </div>
+        <div id="chat-messages" style="flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+            <!-- Messages -->
+        </div>
+        <div style="padding: 1rem; border-top: 1px solid var(--border); display: flex; gap: 0.5rem;">
+            <input type="text" id="chat-input" placeholder="Ask a follow-up question..." style="flex: 1; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; color: white; padding: 0.75rem;">
+            <button id="send-chat" class="btn-icon" style="background: var(--accent-blue); color: white;"><i data-lucide="send" style="width: 16px;"></i></button>
+        </div>
+    </div>
+
+    <!-- NOTEBOOK MODAL -->
+    <div id="notebook-modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+        <div style="background: var(--surface-solid); width: 90%; max-width: 800px; height: 80vh; border-radius: 28px; border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-lg);">
+            <div class="pane-header" style="height: 60px; padding: 0 2rem; background: var(--surface); display: flex; justify-content: space-between; align-items: center;">
+                <span style="display: flex; align-items: center; gap: 0.75rem; font-size: 1rem; text-transform: none;"><i data-lucide="book" style="width: 20px;"></i> Personal Notebook</span>
+                <button id="close-notebook" class="btn-icon" style="background: transparent; border: none; width: auto; height: auto; padding: 5px;"><i data-lucide="x"></i></button>
+            </div>
+            
+            <div style="flex: 1; display: flex; overflow: hidden;">
+                <!-- Sidebar: History -->
+                <div style="width: 250px; border-right: 1px solid var(--border); background: var(--surface); overflow-y: auto; padding: 1rem;">
+                    <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-secondary); margin-bottom: 1rem; letter-spacing: 0.1em; text-transform: uppercase;">Previous Notes</div>
+                    <div id="notes-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <!-- Dynamic list of notes -->
                     </div>
                 </div>
                 
-                <div class="video-container">
-                    <div class="video-wrapper">
-                        <iframe id="video-frame" 
-                            src="" 
-                            title="YouTube video player"
-                            allow="autoplay; encrypted-media; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                        <!-- Gradient Progress Bar Mockup -->
-                        <div class="video-overlay-bottom"></div>
-                        <button id="more-videos-btn" class="more-videos-btn" style="display: none;">
-                            <i data-lucide="list-video" style="width: 16px;"></i> More Videos
-                        </button>
-                    </div>
-
-                    <div id="suggestions-pane" class="suggestions-pane">
-                        <button id="close-suggestions-btn" title="Close Suggestions" class="close-drawer-btn">
-                            <i data-lucide="x" style="width: 18px; height: 18px;"></i>
-                        </button>
-                        <div class="suggestions-header" style="margin-bottom: 16px;">
-                            <div class="pane-title" style="margin-bottom: 0; font-size: 0.75rem;">Related Perspectives</div>
-                        </div>
-                        <div id="suggestions-list">
-                            <!-- Suggestion items with thumbnails -->
-                        </div>
+                <!-- Editor -->
+                <div style="flex: 1; display: flex; flex-direction: column; padding: 2rem; gap: 1rem; background: var(--bg-dark);">
+                    <input type="text" id="note-title" placeholder="Note Title..." style="background: transparent; border: none; border-bottom: 1px solid var(--border); color: white; font-size: 1.5rem; font-weight: 800; outline: none; padding-bottom: 0.5rem;">
+                    <textarea id="note-content" placeholder="Start writing your thoughts..." style="flex: 1; background: transparent; border: none; color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6; outline: none; resize: none;"></textarea>
+                    
+                    <div style="display: flex; justify-content: flex-end; gap: 1rem; padding-top: 1rem;">
+                        <button id="download-note" class="btn-icon" title="Download as Text" style="background: var(--surface-light);"><i data-lucide="download"></i></button>
+                        <button id="save-note" style="background: var(--accent-blue); color: white; border: none; padding: 0.75rem 2rem; border-radius: 12px; font-weight: 700; cursor: pointer;">Save Note</button>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
+    <!-- Scripts -->
     <script src="script.js"></script>
-    <script>
-        lucide.createIcons();
-    </script>
 </body>
 </html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | SpiltStudy</title>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="study-theme">
+    <div class="login-screen">
+        <div class="login-card stagger-in">
+            <div class="logo-badge">SS</div>
+            <h2>Welcome Back</h2>
+            <p>Ready for another productive session?</p>
+            
+            <div id="login-form">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username">
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••">
+                </div>
+                <button class="login-btn" id="login-submit">Login to Workspace</button>
+                <div class="auth-switch">
+                    Don't have an account? <a href="#" id="show-register">Register</a>
+                </div>
+            </div>
+
+            <div id="register-form" class="hidden">
+                <div class="input-group">
+                    <label for="reg-username">Username</label>
+                    <input type="text" id="reg-username" placeholder="Choose a username">
+                </div>
+                <div class="input-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" placeholder="Create a password">
+                </div>
+                <button class="login-btn" id="register-submit">Create Account</button>
+                <div class="auth-switch">
+                    Already have an account? <a href="#" id="show-login">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const showRegister = document.getElementById('show-register');
+        const showLogin = document.getElementById('show-login');
+
+        showRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+        });
+
+        showLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+
+        document.getElementById('login-submit').addEventListener('click', async () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const res = await fetch('http://localhost:8080/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                localStorage.setItem('username', data.username);
+                window.location.href = 'index.html';
+            } else {
+                alert(data.message);
+            }
+        });
+
+        document.getElementById('register-submit').addEventListener('click', async () => {
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+
+            const res = await fetch('http://localhost:8080/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                alert('Registration successful! Please login.');
+                showLogin.click();
+            } else {
+                alert(data.message);
+            }
+        });
+    </script>
+</body>
+</html>
