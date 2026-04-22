@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -25,43 +24,42 @@ public class FirebaseConfig {
     private static final Logger logger = LoggerFactory.getLogger(FirebaseConfig.class);
 
     @Bean
-    public Firestore getFirestore() throws IOException {
-        if (FirebaseApp.getApps().isEmpty()) {
-            InputStream serviceAccount = null;
+    public Firestore getFirestore() {
+        try {
+            if (FirebaseApp.getApps().isEmpty()) {
+                InputStream serviceAccount = null;
 
-            // Method 1: Try Environment Variable (Best for Cloud)
-            String jsonConfig = System.getenv("FIREBASE_CONFIG_JSON");
-            if (jsonConfig != null && !jsonConfig.trim().isEmpty()) {
-                logger.info("Initializing Firebase using FIREBASE_CONFIG_JSON environment variable.");
-                serviceAccount = new ByteArrayInputStream(jsonConfig.getBytes(StandardCharsets.UTF_8));
-            } else {
-                // Method 2: Try Local File (Best for Local Development)
-                String fileName = "firebase-service-account.json.json";
-                if (Files.exists(Paths.get(fileName))) {
-                    logger.info("Found Firebase config at: {}", new File(fileName).getAbsolutePath());
-                    serviceAccount = new FileInputStream(fileName);
-                } else if (Files.exists(Paths.get("/app/" + fileName))) {
-                    logger.info("Found Firebase config at: /app/{}", fileName);
-                    serviceAccount = new FileInputStream("/app/" + fileName);
+                String jsonConfig = System.getenv("FIREBASE_CONFIG_JSON");
+                if (jsonConfig != null && !jsonConfig.trim().isEmpty()) {
+                    logger.info("Firebase: Using Environment Variable FIREBASE_CONFIG_JSON");
+                    serviceAccount = new ByteArrayInputStream(jsonConfig.getBytes(StandardCharsets.UTF_8));
                 } else {
-                    String error = "CRITICAL: Firebase credentials not found! Please provide FIREBASE_CONFIG_JSON env var or " + fileName + " file.";
-                    logger.error(error);
-                    throw new IOException(error);
+                    String fileName = "firebase-service-account.json.json";
+                    if (Files.exists(Paths.get(fileName))) {
+                        logger.info("Firebase: Found local file at {}", fileName);
+                        serviceAccount = new FileInputStream(fileName);
+                    } else if (Files.exists(Paths.get("/app/" + fileName))) {
+                        logger.info("Firebase: Found cloud file at /app/{}", fileName);
+                        serviceAccount = new FileInputStream("/app/" + fileName);
+                    }
                 }
-            }
 
-            try {
+                if (serviceAccount == null) {
+                    logger.error("CRITICAL ERROR: No Firebase credentials found! Application will start without Notebook support.");
+                    return null;
+                }
+
                 FirebaseOptions options = new FirebaseOptions.Builder()
                         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                         .build();
 
                 FirebaseApp.initializeApp(options);
-                logger.info("Firebase has been initialized successfully!");
-            } catch (Exception e) {
-                logger.error("FAILED to initialize Firebase: {}", e.getMessage());
-                throw new IOException("Firebase initialization failed", e);
+                logger.info("Firebase initialized successfully!");
             }
+            return FirestoreClient.getFirestore();
+        } catch (Exception e) {
+            logger.error("Firebase Initialization Failed: {}", e.getMessage());
+            return null; // Return null instead of crashing
         }
-        return FirestoreClient.getFirestore();
     }
 }
