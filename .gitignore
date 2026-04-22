@@ -44,3 +44,6 @@ target/
 *.tar.gz
 *.rar
 hs_err_pid*
+
+# Firebase Secrets
+firebase-service-account.json.json
