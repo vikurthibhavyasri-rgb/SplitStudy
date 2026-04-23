@@ -41,7 +41,7 @@ public class ChatController {
         String botResponse = "I'm sorry, I couldn't connect to the AI right now.";
         try {
             JSONObject body = new JSONObject();
-            body.put("model", "llama3-8b-8192");
+            body.put("model", "llama-3.3-70b-versatile");
             
             JSONArray messages = new JSONArray();
             JSONObject systemMsg = new JSONObject();
