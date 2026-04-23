@@ -3,6 +3,7 @@ services:
     name: splitstudy
     runtime: docker
     plan: free
+    autoDeploy: yes
     healthCheckPath: /
     envVars:
       - key: GEMINI_API_KEY
