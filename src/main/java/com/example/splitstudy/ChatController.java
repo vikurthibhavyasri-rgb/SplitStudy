@@ -22,11 +22,11 @@ public class ChatController {
     @Autowired
     private FirestoreService firestoreService;
 
-    @Value("${gemini.api.key}")
+    @Value("${groq.api.key}")
     private String apiKey;
 
-    private String getGeminiUrl() {
-        return "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + apiKey;
+    private String getGroqUrl() {
+        return "https://api.groq.com/openai/v1/chat/completions";
     }
 
     @PostMapping
@@ -37,35 +37,39 @@ public class ChatController {
         // 1. Save user message to Firestore
         firestoreService.saveChatMessage(username, "user", userMessage);
 
-        // 2. Call Gemini API
+        // 2. Call Groq API (OpenAI Compatible)
         String botResponse = "I'm sorry, I couldn't connect to the AI right now.";
         try {
             JSONObject body = new JSONObject();
-            JSONArray contents = new JSONArray();
-            JSONObject content = new JSONObject();
-            JSONArray parts = new JSONArray();
-            JSONObject part = new JSONObject();
+            body.put("model", "llama3-8b-8192");
             
-            part.put("text", "You are a helpful study assistant for SpiltStudy. Answer the following: " + userMessage);
-            parts.put(part);
-            content.put("parts", parts);
-            contents.put(content);
-            body.put("contents", contents);
+            JSONArray messages = new JSONArray();
+            JSONObject systemMsg = new JSONObject();
+            systemMsg.put("role", "system");
+            systemMsg.put("content", "You are a helpful study assistant for SpiltStudy.");
+            messages.put(systemMsg);
+            
+            JSONObject userMsg = new JSONObject();
+            userMsg.put("role", "user");
+            userMsg.put("content", userMessage);
+            messages.put(userMsg);
+            
+            body.put("messages", messages);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(apiKey);
+            
             HttpEntity<String> entity = new HttpEntity<>(body.toString(), headers);
 
-            String response = restTemplate.postForObject(getGeminiUrl(), entity, String.class);
+            String response = restTemplate.postForObject(getGroqUrl(), entity, String.class);
             JSONObject jsonResponse = new JSONObject(response);
             
-            if (jsonResponse.has("candidates")) {
-                botResponse = jsonResponse.getJSONArray("candidates")
+            if (jsonResponse.has("choices")) {
+                botResponse = jsonResponse.getJSONArray("choices")
                         .getJSONObject(0)
-                        .getJSONObject("content")
-                        .getJSONArray("parts")
-                        .getJSONObject(0)
-                        .getString("text");
+                        .getJSONObject("message")
+                        .getString("content");
             }
         } catch (Exception e) {
             botResponse = "AI Error: " + e.getMessage();
