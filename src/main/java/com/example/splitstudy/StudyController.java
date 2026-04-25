@@ -40,7 +40,7 @@ public class StudyController {
 
         try {
             // 1. Fetch Academic Notes
-            String academicUrl = "https://www.googleapis.com/customsearch/v1?key=" + searchApiKey + "&cx=" + CX_ID + "&q=" + topic + " site:w3schools.com OR site:geeksforgeeks.org";     
+            String academicUrl = "https://www.googleapis.com/customsearch/v1?key=" + searchApiKey + "&cx=" + CX_ID + "&q=" + topic;     
             String academicResponse = restTemplate.getForObject(academicUrl, String.class);
             formattedNotes = formatNotes(academicResponse, topic);
 
